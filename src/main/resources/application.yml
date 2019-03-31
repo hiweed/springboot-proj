@@ -1,2 +1,8 @@
 server:
   port: 8088
+
+mybatis:
+  disableOrm: true #禁用orm后下面配置项无效，只能session.opensession
+  typeAliasesPackage: cn.hiweedwang.springbootproj.model
+  configLocations: classpath:mybatis-cnf.xml
+  mapperLocations: classpath:mapper/*.xml

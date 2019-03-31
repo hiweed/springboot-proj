@@ -1,5 +1,7 @@
-package cn.hiweedwang.datasource;
+package cn.hiweedwang.springbootproj.config;
 
+import cn.hiweedwang.datasource.DynamicDataSource;
+import cn.hiweedwang.datasource.LazyRegisterDataSourceLoader;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

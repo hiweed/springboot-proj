@@ -2,6 +2,8 @@ package cn.hiweedwang.springbootproj;
 
 import cn.hiweedwang.datasource.DynamicDataSource;
 import cn.hiweedwang.datasource.DynamicDataSourceContextHolder;
+import org.apache.ibatis.jdbc.SQL;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class DataSourceTests {
     @Autowired
     private DynamicDataSource dataSource;
 
+    @Autowired
+    private SqlSessionFactory session;
+
     @Test
     public void testSQL(){
         try{
@@ -33,6 +38,24 @@ public class DataSourceTests {
             conn =  dataSource.getConnection();
             stmt = conn.prepareStatement("SELECT USERNAME FROM user");
             rs = stmt.executeQuery();
+            if (rs.next()){
+                System.out.println(rs.getString("username"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSQLSession(){
+        try{
+            DynamicDataSourceContextHolder.setDataSourceId("demo");
+            Connection conn =  session.openSession().getConnection();
+            //动态构建sql语句
+            SQL sql = new SQL().SELECT("USERNAME,COUNT(*)").FROM("user");
+            String strSql = sql.toString();
+            PreparedStatement stmt = conn.prepareStatement(strSql);
+            ResultSet rs = stmt.executeQuery();
             if (rs.next()){
                 System.out.println(rs.getString("username"));
             }
