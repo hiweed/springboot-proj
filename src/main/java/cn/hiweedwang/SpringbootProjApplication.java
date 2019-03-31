@@ -7,7 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 
 
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
-@PropertySource("classpath:datasource.properties")
 public class SpringbootProjApplication {
 
     public static void main(String[] args) {

@@ -1,19 +1,19 @@
 package cn.hiweedwang.datasource;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-
-import javax.sql.DataSource;
-import com.zaxxer.hikari.HikariConfig;
 import org.springframework.core.env.Environment;
 
+import javax.sql.DataSource;
+
 @Configuration
-@PropertySource(value = "classpath:mysql-datasource.properties")
-public class ＭySqlLazyRegisterDataSourceLoader
+@PropertySource(value = "classpath:mssql-datasource.properties")
+public class ＭSSqlLazyRegisterDataSourceLoader
                         implements LazyRegisterDataSourceLoader {
 
     @Value(value="${datasource.url}")
@@ -78,7 +78,6 @@ public class ＭySqlLazyRegisterDataSourceLoader
      * 在这里生成bean避免了侵入DynamicDataSource
      * @return
      */
-    @Bean
     public DynamicDataSource getDataSource(){
         DynamicDataSource ds = new DynamicDataSource();
         ds.setLoader(this);
