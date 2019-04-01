@@ -14,7 +14,6 @@ import org.springframework.core.env.Environment;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource(value = "classpath:mssql-datasource.properties")
 public class ＭSSqlLazyRegisterDataSourceLoader
                         implements LazyRegisterDataSourceLoader {
 
@@ -80,6 +79,7 @@ public class ＭSSqlLazyRegisterDataSourceLoader
      * 在这里生成bean避免了侵入DynamicDataSource
      * @return
      */
+    @Bean
     public DynamicDataSource getDataSource(){
         DynamicDataSource ds = new DynamicDataSource();
         ds.setLoader(this);

@@ -14,7 +14,6 @@ import com.zaxxer.hikari.HikariConfig;
 import org.springframework.core.env.Environment;
 
 @Configuration
-@PropertySource(value = "classpath:mysql-datasource.properties")
 public class ＭySqlLazyRegisterDataSourceLoader
                         implements LazyRegisterDataSourceLoader {
 
@@ -80,7 +79,7 @@ public class ＭySqlLazyRegisterDataSourceLoader
      * 在这里生成bean避免了侵入DynamicDataSource
      * @return
      */
-    @Bean
+    //@Bean
     public DynamicDataSource getDataSource(){
         DynamicDataSource ds = new DynamicDataSource();
         ds.setLoader(this);

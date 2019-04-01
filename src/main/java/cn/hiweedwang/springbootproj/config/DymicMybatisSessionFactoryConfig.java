@@ -22,25 +22,32 @@ public class DymicMybatisSessionFactoryConfig {
     @Autowired
     public SqlSessionFactory sqlSessionFactory(DynamicDataSource ds) throws Exception{
         SqlSessionFactoryBean sqlSFB = new SqlSessionFactoryBean();
+        //指定自定义的数据源,这个必须用,否则报错
         sqlSFB.setDataSource(ds);
 
-        if(env.getProperty("mybatis.disableOrm")
-                .equalsIgnoreCase("true")){
-            return sqlSFB.getObject();
-        }
-        //指定自定义的数据源,这个必须用,否则报错
-        sqlSFB.setTypeAliasesPackage(env.getProperty("mybatis.typeAliasesPackage"));
-        //指定对应的实体包,多个包之间逗号隔开
-        Resource configLocationResource =
-                new PathMatchingResourcePatternResolver()
-                        .getResource(env.getProperty("mybatis.configLocations"));
-        sqlSFB.setConfigLocation(configLocationResource);
         //指定mybatis的本地配置文件资源,目的是定义实体等别名,可以不用,如果不用对应配置文件应注释掉
-        Resource[] mapperLocations =
-                new PathMatchingResourcePatternResolver()
-                        .getResources(env.getProperty("mybatis.mapperLocations"));
-        sqlSFB.setMapperLocations(mapperLocations);
+        String strCfgLocation = env.getProperty("mybatis.configLocations");
+        if(strCfgLocation!=null&&!strCfgLocation.isEmpty()){
+            Resource configLocationResource =
+                    new PathMatchingResourcePatternResolver()
+                            .getResource(strCfgLocation);
+            sqlSFB.setConfigLocation(configLocationResource);
+        }
+
+        //指定对应的实体包,多个包之间逗号隔开
+        String strTypeAliasesPackage = env.getProperty("mybatis.typeAliasesPackage");
+        if(strTypeAliasesPackage!=null&&!strTypeAliasesPackage.isEmpty()){
+            sqlSFB.setTypeAliasesPackage(strTypeAliasesPackage);
+        }
+
         //指定mybatis的库表到实体的映射xml文件的mapper资源
+        String strmapperLocations = env.getProperty("mybatis.mapperLocations");
+        if(strmapperLocations!=null&&!strmapperLocations.isEmpty()){
+            Resource[] mapperLocations =
+                    new PathMatchingResourcePatternResolver()
+                            .getResources(strmapperLocations);
+            sqlSFB.setMapperLocations(mapperLocations);
+        }
         return sqlSFB.getObject();
     }
 }

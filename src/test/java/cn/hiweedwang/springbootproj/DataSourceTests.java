@@ -18,13 +18,14 @@ import java.sql.Statement;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DataSourceTests {
+
     @Autowired
     private DynamicDataSource dataSource;
 
     @Autowired
     private SqlSessionFactory session;
 
-    @Test
+    //@Test
     public void testSQL(){
         try{
           Connection conn =  dataSource.getConnection();
@@ -45,8 +46,7 @@ public class DataSourceTests {
             e.printStackTrace();
         }
     }
-
-    @Test
+    //@Test
     public void testSQLSession(){
         try{
             DynamicDataSourceContextHolder.setDataSourceId("demo");
@@ -58,6 +58,28 @@ public class DataSourceTests {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()){
                 System.out.println(rs.getString("username"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 测试SQLSERVER数据源
+     */
+    @Test
+    public void testMSSQLSession(){
+        try{
+            DynamicDataSourceContextHolder.setDataSourceId("JZZF2013_XH_2019YEAR");
+            Connection conn =  session.openSession().getConnection();
+            //动态构建sql语句
+            SQL sql = new SQL().SELECT("CODE,NAME").FROM("ZF1USER01");
+            String strSql = sql.toString();
+            PreparedStatement stmt = conn.prepareStatement(strSql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                System.out.println(rs.getString("CODE")+":"
+                        +rs.getString("NAME"));
             }
         }catch (Exception e){
             e.printStackTrace();

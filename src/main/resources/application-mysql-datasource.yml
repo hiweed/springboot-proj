@@ -1,0 +1,15 @@
+datasource:
+  url: jdbc:mysql://192.168.1.250:3306/{db}?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+  username: demo
+  password: demo
+  driver-class-Name: com.mysql.cj.jdbc.Driver
+  params:
+    db: demo
+  hikari:
+    minimum-idle: 3
+    maximum-poolsize: 500
+    auto-commit: true
+    idle-timeout: 10000
+    pool-name: DatebookHikariCP
+    max-lifetime: 1800000
+    connection-timeout: 30000

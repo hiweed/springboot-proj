@@ -1,8 +1,13 @@
 server:
   port: 8088
-
 mybatis:
-  disableOrm: true #禁用orm后下面配置项无效，只能session.opensession
-  typeAliasesPackage: cn.hiweedwang.springbootproj.model
-  configLocations: classpath:mybatis-cnf.xml
-  mapperLocations: classpath:mapper/*.xml
+#以下各项都是可选科配置 其中configLocations 表示 所有配置从xml文件加载
+#，此时typeAliasesPackage，mapperLocations 均无效，如果完全采用注解方式处理以下三项均无需配置
+#  configLocations: classpath:mybatis-cnf.xml
+#  typeAliasesPackage: cn.hiweedwang.springbootproj.model
+#  mapperLocations: classpath:mapper/*.xml
+
+#默认激活项
+spring:
+  profiles:
+    active: mssql-datasource
