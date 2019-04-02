@@ -2,6 +2,7 @@ package cn.hiweedwang.springbootproj;
 
 import cn.hiweedwang.datasource.DynamicDataSource;
 import cn.hiweedwang.datasource.DynamicDataSourceContextHolder;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -70,9 +72,10 @@ public class DataSourceTests {
     @Test
     public void testMSSQLSession(){
         try{
-            DynamicDataSourceContextHolder.setDataSourceId("JZZF2013_XH_2019YEAR");
+            DynamicDataSourceContextHolder.setDataSourceId("JZZF2013_ZKJ_2018YEAR");
             Connection conn =  session.openSession().getConnection();
-            //动态构建sql语句
+
+           //动态构建sql语句
             SQL sql = new SQL().SELECT("CODE,NAME").FROM("ZF1USER01");
             String strSql = sql.toString();
             PreparedStatement stmt = conn.prepareStatement(strSql);
@@ -85,4 +88,5 @@ public class DataSourceTests {
             e.printStackTrace();
         }
     }
+
 }

@@ -10,10 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 public class DymicMybatisSessionFactoryConfig {
-
 
     @Autowired
     private Environment env;
@@ -49,5 +50,16 @@ public class DymicMybatisSessionFactoryConfig {
             sqlSFB.setMapperLocations(mapperLocations);
         }
         return sqlSFB.getObject();
+    }
+
+    /**
+     * 自动事务管理器的配置
+     * @param dataSource
+     * @return
+     */
+    @Bean
+    @Autowired
+    public PlatformTransactionManager bfTransactionManager(DynamicDataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 }

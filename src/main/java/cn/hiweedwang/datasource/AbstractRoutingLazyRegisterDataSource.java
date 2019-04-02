@@ -42,6 +42,7 @@ public abstract class AbstractRoutingLazyRegisterDataSource extends AbstractData
      * 注册数据源时的同步互斥锁
      */
     private byte[] lock = new byte[0];
+
     /**
      * 数据源注册器
      */
@@ -113,6 +114,16 @@ public abstract class AbstractRoutingLazyRegisterDataSource extends AbstractData
         return determineTargetDataSource().getConnection(username, password);
     }
 
+    /**
+     * 临时取一个连接，此方法获取的连接不受事务管理器影响，必然被切换
+     * @param lookupkey
+     * @return
+     * @throws SQLException
+     */
+    public Connection getConnectionByLookUpKey(String lookupkey) throws SQLException {
+        return determineTargetDataSource(lookupkey).getConnection();
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public <T> T unwrap(Class<T> iface) throws SQLException {
@@ -128,15 +139,21 @@ public abstract class AbstractRoutingLazyRegisterDataSource extends AbstractData
     }
 
     /**
-     * Retrieve the current target DataSource. Determines the
-     * {@link #determineCurrentLookupKey() current lookup key}, performs
-     * falls back to the specified
-     * @see #determineCurrentLookupKey()
+     * 由外部提供数据源切换方式 See determineCurrentLookupKey
+     * @return
      */
     protected DataSource determineTargetDataSource() {
-        Assert.notNull(this.loader, "DataSource loader not initialized");
         Object lookupKey = determineCurrentLookupKey();
+        return determineTargetDataSource(lookupKey);
+    }
 
+    /**
+     * 根据传入的id 决定数据源
+     * @param lookupKey 数据源的id
+     * @return
+     */
+    protected DataSource determineTargetDataSource(Object lookupKey) {
+        Assert.notNull(this.loader, "DataSource loader not initialized");
         if (null!=lookupKey
                 &&!this.resolvedDataSources.containsKey(lookupKey)){
             synchronized (this.lock){
